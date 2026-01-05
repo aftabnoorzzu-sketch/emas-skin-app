@@ -1,0 +1,61 @@
+import io
+import numpy as np
+import streamlit as st
+from PIL import Image
+
+st.set_page_config(page_title="E-MAS Skin Cancer App", layout="centered")
+
+st.title("E-MAS: Skin Lesion Screening Application")
+st.caption(
+    "Prototype phone-accessible AI application for research and educational use. "
+    "Not a medical diagnosis system."
+)
+
+IMG_SIZE = 224
+HAM10000_CLASSES = ["akiec", "bcc", "bkl", "df", "mel", "nv", "vasc"]
+
+def preprocess_image(img):
+    img = img.convert("RGB").resize((IMG_SIZE, IMG_SIZE))
+    arr = np.asarray(img).astype(np.float32) / 255.0
+    return np.expand_dims(arr, axis=0)
+
+# Try loading model (optional)
+model = None
+try:
+    import tensorflow as tf
+    model = tf.keras.models.load_model("emas_model.h5", compile=False)
+except Exception:
+    model = None
+
+uploaded_file = st.file_uploader(
+    "Upload a dermoscopic image (JPG/PNG)",
+    type=["jpg", "jpeg", "png"]
+)
+
+if uploaded_file:
+    image = Image.open(io.BytesIO(uploaded_file.read()))
+    st.image(image, caption="Input Image", use_container_width=True)
+
+    if model is None:
+        st.warning(
+            "⚠️ Trained model is not loaded. "
+            "This demo shows the application interface only."
+        )
+        st.info(
+            "In the final system, the uploaded image is processed by the trained "
+            "E-MAS deep learning model to produce lesion classification results."
+        )
+    else:
+        x = preprocess_image(image)
+        preds = model.predict(x)[0]
+        idx = int(np.argmax(preds))
+
+        st.subheader("Prediction Result")
+        st.write(f"**Predicted Class:** {HAM10000_CLASSES[idx]}")
+        st.write(f"**Confidence:** {preds[idx]:.4f}")
+
+st.markdown("---")
+st.markdown(
+    "**Disclaimer:** This application is intended for decision-support and "
+    "educational demonstration only and does not replace professional medical evaluation."
+)
