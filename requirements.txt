@@ -1,4 +1,29 @@
-streamlit
-numpy
-pillow
-tensorflow
+# E-MAS: Efficient Multi-Scale Attention System
+# Python dependencies for dermoscopic skin lesion classification
+
+# Core Deep Learning
+torch>=2.0.0
+torchvision>=0.15.0
+numpy>=1.24.0
+
+# Image Processing
+Pillow>=10.0.0
+opencv-python>=4.8.0
+
+# Data Processing
+pandas>=2.0.0
+scikit-learn>=1.3.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.15.0
+
+# Web Application
+streamlit>=1.28.0
+
+# Utilities
+tqdm>=4.65.0
+
+# Optional: For better performance
+# psutil>=5.9.0
