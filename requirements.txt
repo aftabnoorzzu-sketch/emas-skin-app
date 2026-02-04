@@ -8,7 +8,7 @@ numpy>=1.24.0
 
 # Image Processing
 Pillow>=10.0.0
-opencv-python>=4.8.0
+opencv-python-headless>=4.8.0
 
 # Data Processing
 pandas>=2.0.0
@@ -25,5 +25,5 @@ streamlit>=1.28.0
 # Utilities
 tqdm>=4.65.0
 
-# Optional: For better performance
-# psutil>=5.9.0
+# Optional: system utilities
+psutil>=5.9.0
